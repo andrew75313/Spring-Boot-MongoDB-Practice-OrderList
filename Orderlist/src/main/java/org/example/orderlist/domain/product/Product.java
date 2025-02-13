@@ -1,9 +1,9 @@
 package org.example.orderlist.domain.product;
 
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products") // MongoDB의 "products" 컬렉션과 매핑
