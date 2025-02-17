@@ -1,12 +1,11 @@
 package org.example.orderlist.domain.product;
 
 import lombok.RequiredArgsConstructor;
+import org.example.orderlist.domain.file.CsvService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/products/")
@@ -14,10 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+    private final CsvService csvService;
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto productRequestDto) {
         ProductResponseDto response = productService.createProduct(productRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadCsvFile(@RequestParam("file") MultipartFile file) {
+        try {
+            csvService.uploadProductCsv(file);
+            return ResponseEntity.ok("CSV 파일 업로드 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
