@@ -1,15 +1,12 @@
 package org.example.orderlist.domain.purchase;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class Purchase {
 
-    private String productId;  // 구입한 제품의 ID
-    private int quantity;      // 구입한 갯수
-
-    public Purchase(String productId, int quantity) {
-        this.productId = productId;
-        this.quantity = quantity;
-    }
+    private String productId;
+    private int quantity;
 }

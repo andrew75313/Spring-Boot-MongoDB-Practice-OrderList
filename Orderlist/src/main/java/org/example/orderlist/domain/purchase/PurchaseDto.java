@@ -7,5 +7,7 @@ import lombok.Setter;
 @Setter
 public class PurchaseDto {
     private String productId;
+    private String productName;
     private int quantity;
+    private Long subTotal;
 }
