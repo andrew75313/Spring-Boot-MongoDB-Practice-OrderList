@@ -31,16 +31,20 @@ public class CsvService {
             csvReader.readNext();
 
             while ((nextRecord = csvReader.readNext()) != null) {
-                String id = nextRecord[0];
-                String name = nextRecord[1];
-                String email = nextRecord[2];
-                String purchases = nextRecord[3];
+                String name = nextRecord[0];
+                String email = nextRecord[1];
+                String purchases = nextRecord[2];
 
                 // JSON -> List<Purchase>
                 Type purchaseListType = new TypeToken<List<Purchase>>() {}.getType();
                 List<Purchase> purchaseList = gson.fromJson(purchases, purchaseListType);
 
-                User user = new User(id, name, email, purchaseList);
+                User user = User.builder()
+                        .name(name)
+                        .email(email)
+                        .purchases(purchaseList)
+                        .build();
+
                 users.add(user);
             }
 
