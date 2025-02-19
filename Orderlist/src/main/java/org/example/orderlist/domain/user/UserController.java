@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users/")
 @RequiredArgsConstructor
@@ -39,4 +41,11 @@ public class UserController {
          return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/filter/max/{maxQuantity}/")
+    public ResponseEntity<List<UserDataResponseDto>> getUserByMaxQuantity(@PathVariable int maxQuantity) {
+
+        List<UserDataResponseDto> response = userService.getUserByMaxQuantity(maxQuantity);
+
+        return ResponseEntity.ok(response);
+    }
 }
