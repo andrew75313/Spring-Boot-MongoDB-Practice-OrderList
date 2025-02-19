@@ -41,7 +41,7 @@ public class UserController {
          return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/filter/max/{maxQuantity}/")
+    @GetMapping("/filter/max/{maxQuantity}")
     public ResponseEntity<List<UserDataResponseDto>> getUserByMaxQuantity(@PathVariable int maxQuantity) {
 
         List<UserDataResponseDto> response = userService.getUserByMaxQuantity(maxQuantity);
