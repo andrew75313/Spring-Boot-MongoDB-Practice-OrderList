@@ -3,16 +3,22 @@ package org.example.orderlist.domain.file;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import lombok.RequiredArgsConstructor;
 import org.example.orderlist.domain.product.Product;
 import org.example.orderlist.domain.product.ProductRepository;
 import org.example.orderlist.domain.purchase.Purchase;
 import org.example.orderlist.domain.user.User;
 import org.example.orderlist.domain.user.UserRepository;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +82,37 @@ public class CsvService {
             }
 
             productRepository.saveAll(products);
+        }
+    }
+
+    public byte[] downloadUserCsv() throws Exception {
+        try{
+            List<User> userList = userRepository.findAll();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            CSVWriter csvWriter = new CSVWriter(new OutputStreamWriter(outputStream));
+
+            // CSV Header
+            String[] header = {"id", "name", "email", "purchases"};
+            csvWriter.writeNext(header);
+
+            // 사용자 데이터로 CSV 작성
+            for (User user : userList) {
+                String[] data = {
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        gson.toJson(user.getPurchases())
+                };
+                csvWriter.writeNext(data);
+            }
+
+            csvWriter.close();
+
+            // CSV ->  byte[]
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            return null;
         }
     }
 }

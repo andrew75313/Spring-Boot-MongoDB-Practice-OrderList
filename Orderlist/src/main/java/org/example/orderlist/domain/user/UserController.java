@@ -2,11 +2,11 @@ package org.example.orderlist.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.example.orderlist.domain.file.CsvService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -31,6 +31,20 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<byte[]> downloadCsvFile() throws Exception{
+
+        byte[] response = csvService.downloadUserCsv();
+
+        if(response == null) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=users.csv");
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
