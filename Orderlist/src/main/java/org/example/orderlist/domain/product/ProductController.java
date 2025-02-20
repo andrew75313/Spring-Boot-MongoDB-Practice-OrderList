@@ -21,6 +21,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable String id) {
+        ProductResponseDto response = productService.getProduct(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+    }
+
     @PostMapping("/describe")
         public ResponseEntity<ProductDescripResponseDto> addProductDescription(@RequestBody ProductDescripRequestDto productDescripRequestDto) {
         ProductDescripResponseDto response = productService.addProductDescription(productDescripRequestDto);

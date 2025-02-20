@@ -46,4 +46,23 @@ public class ProductService {
 
         return productDescripResponseDto;
     }
+
+    public ProductResponseDto getProduct(String id) {
+        Product foundProduct = productRepository.findById(id).orElseThrow(
+                () -> new IllegalArgumentException("Product not found")
+        );
+
+        String description = productDescriptionRepository.findByProductId(foundProduct.getId())
+                .map(ProductDescription::getDescription) // ProductDescription -> String 변환
+                .orElse("No Description");
+
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+
+        productResponseDto.setId(foundProduct.getId());
+        productResponseDto.setName(foundProduct.getName());
+        productResponseDto.setPrice(foundProduct.getPrice());
+        productResponseDto.setDescription(description);
+
+        return productResponseDto;
+    }
 }
