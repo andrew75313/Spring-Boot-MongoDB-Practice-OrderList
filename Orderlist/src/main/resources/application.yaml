@@ -5,5 +5,18 @@ spring:
       port: 27017
       database: mydatabase
       username: root
-      password: password
+      password: ${PASSWORD}
       authentication-database: admin
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydatabase
+    username: root
+    password: ${PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+

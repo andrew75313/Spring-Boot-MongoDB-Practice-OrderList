@@ -21,6 +21,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping("/describe")
+        public ResponseEntity<ProductDescripResponseDto> addProductDescription(@RequestBody ProductDescripRequestDto productDescripRequestDto) {
+        ProductDescripResponseDto response = productService.addProductDescription(productDescripRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
     @PostMapping("/upload")
     public ResponseEntity<String> uploadCsvFile(@RequestParam("file") MultipartFile file) {
         try {
